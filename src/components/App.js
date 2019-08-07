@@ -23,19 +23,29 @@ class App extends React.Component {
   }
 
   onChangeType = (event) => {
-    console.warn("onChangeType");
+    console.log("onChangeType", event);
+    this.setState({filters: Object.assign({}, this.state.filters, {type: event.target.value})})
+
   }
-  onFindPetsClick = (filter) => {
-    // console.log("onFindPetsClick", filter);
-    this.setState({filters: {type: filter}});
-    this.queryAndRenderPets(filter);
+  onFindPetsClick = () => {
+    // if (filter == undefined) {
+      // filter = this.state.filters.type
+      // 
+      // this.queryAndRenderPets(filter);
+    // } else {
+      // console.log("onFindPetsClick", filter);
+      // this.setState({filters: {type: filter}});
+      this.queryAndRenderPets(this.state.filters.type);
+    // }
   }
 
-  onAdoptPet = (event, pet) => {
+  onAdoptPet = (pet) => {
     console.log("onAdoptPet", pet)
     this.state.pets.forEach(reqPet => {
-      if(reqPet === pet){
-        reqPet.isAdopted = !reqPet.isAdopted
+      if(reqPet.id === pet){
+        // console.log("before", reqPet);
+        reqPet.isAdopted = !reqPet.isAdopted;
+        // console.log("after", reqPet);
       }
     })
     this.setState({pets: this.state.pets});

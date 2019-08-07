@@ -2,13 +2,17 @@ import React from 'react'
 
 class Filters extends React.Component {
 
-  filter = null;
+
+  state = {value: 'all'};
+  // filter = null;
   onChangeHandler = (event) => {
     // event.persist();
     const thisEvent = Object.assign({}, event);
     // console.log(thisEvent);
-    this.filter = thisEvent.currentTarget.value
-    
+    console.log(thisEvent)
+    this.filter = thisEvent.target.value
+    this.setState({value: thisEvent.target.value})
+    this.props.onChangeType(thisEvent);
   }
 
   render() {
@@ -16,7 +20,7 @@ class Filters extends React.Component {
       <div className="ui form">
         <h3>Animal type</h3>
         <div className="field">
-          <select name="type" id="type" onChange={this.onChangeHandler}>
+          <select name="type" id="type" value={this.state.filters} onChange={this.onChangeHandler}>
             <option value="all">All</option>
             <option value="cat">Cats</option>
             <option value="dog">Dogs</option>
