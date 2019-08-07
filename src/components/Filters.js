@@ -6,10 +6,7 @@ class Filters extends React.Component {
   state = {value: 'all'};
   // filter = null;
   onChangeHandler = (event) => {
-    // event.persist();
     const thisEvent = Object.assign({}, event);
-    // console.log(thisEvent);
-    console.log(thisEvent)
     this.filter = thisEvent.target.value
     this.setState({value: thisEvent.target.value})
     this.props.onChangeType(thisEvent);
