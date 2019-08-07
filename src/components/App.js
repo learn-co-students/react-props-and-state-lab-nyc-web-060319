@@ -15,6 +15,55 @@ class App extends React.Component {
     }
   }
 
+  queryAndRenderPets = (type) => {
+    const apiURL = this.URL(type);
+    fetch(apiURL)
+      .then(data => data.json())
+      .then(parsed => this.setState({pets: parsed}));
+  }
+
+  onChangeType = (event) => {
+    console.warn("onChangeType");
+  }
+  onFindPetsClick = (filter) => {
+    // console.log("onFindPetsClick", filter);
+    this.setState({filters: {type: filter}});
+    this.queryAndRenderPets(filter);
+  }
+
+  onAdoptPet = (event, pet) => {
+    console.log("onAdoptPet", pet)
+    this.state.pets.forEach(reqPet => {
+      if(reqPet === pet){
+        reqPet.isAdopted = !reqPet.isAdopted
+      }
+    })
+    this.setState({pets: this.state.pets});
+  }
+
+  URL(type) {
+    console.log(type);
+    if (type === "all") {
+      return '/api/pets'
+    }
+    switch (type) {
+      case ('cat'):
+        return '/api/pets?type=cat';
+      case ('dog'):
+        return '/api/pets?type=dog';
+      case ('micropig'):
+        return '/api/pets?type=micropig';
+      default:
+        console.error('invalid filter type');
+    }
+    console.warn("Never reach this place?");
+    debugger;
+  }
+
+  componentDidMount() {
+    this.queryAndRenderPets('all');
+  }
+
   render() {
     return (
       <div className="ui container">
@@ -24,10 +73,10 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters />
+              <Filters onChangeType={this.onChangeType} onFindPetsClick={this.onFindPetsClick}/>
             </div>
             <div className="twelve wide column">
-              <PetBrowser />
+              <PetBrowser pets={this.state.pets} onAdoptPet={this.onAdoptPet}/>
             </div>
           </div>
         </div>
